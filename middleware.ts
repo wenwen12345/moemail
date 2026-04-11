@@ -23,6 +23,11 @@ export async function middleware(request: Request) {
       return NextResponse.next()
     }
 
+    // /cfmail 路由自行处理 x-admin-auth 认证，跳过全局 session/API Key 检查
+    if (pathname.startsWith('/api/cfmail')) {
+      return NextResponse.next()
+    }
+
     request.headers.delete("X-User-Id")
     const apiKey = request.headers.get("X-API-Key")
     if (apiKey) {
